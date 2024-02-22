@@ -12,7 +12,7 @@ def pairs_with_sum(nums, k):
         seen.add(num)
     return False
 
-# Example usage:
+# Example
 nums = [10, 15, 3, 7]
 k = 17
 print(pairs_with_sum(nums, k))  # Output: True
@@ -40,9 +40,36 @@ def product_except_self(nums):
 
     return result
 
-# Example usage:
+# Example
 nums1 = [1, 2, 3, 4, 5]
 print(product_except_self(nums1))  # Output: [120, 60, 40, 30, 24]
 
 nums2 = [3, 2, 1]
 print(product_except_self(nums2))  # Output: [2, 3, 6]
+
+# 3
+# Given an array of integers, find the first missing positive integer in linear time and constant space. 
+# In other words, find the lowest positive integer that does not exist in the array. 
+# The array can contain duplicates and negative numbers as well.
+# For example, the input [3, 4, -1, 1] should give 2. The input [1, 2, 0] should give 3.
+#
+
+def first_missing_positive(nums):
+    n = len(nums)
+    
+    # Rearrange the array: place each positive integer at its respective index
+    for i in range(n):
+        while 0 < nums[i] <= n and nums[nums[i] - 1] != nums[i]:
+            nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
+    
+    # Iterate through the rearranged array to find the first missing positive integer
+    for i in range(n):
+        if nums[i] != i + 1:
+            return i + 1
+    
+    # If all positive integers from 1 to n are present, return n + 1
+    return n + 1
+
+# Test cases
+print(first_missing_positive([3, 4, -1, 1]))  # Output: 2
+print(first_missing_positive([1, 2, 0]))     # Output: 3

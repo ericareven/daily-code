@@ -52,3 +52,35 @@ console.log(productExceptSelf(nums1)); // Output: [120, 60, 40, 30, 24]
 
 const nums2 = [3, 2, 1];
 console.log(productExceptSelf(nums2)); // Output: [2, 3, 6]
+
+/* 3
+Given an array of integers, find the first missing positive integer in linear time and constant space. 
+In other words, find the lowest positive integer that does not exist in the array. 
+The array can contain duplicates and negative numbers as well.
+For example, the input [3, 4, -1, 1] should give 2. The input [1, 2, 0] should give 3.
+*/
+
+function firstMissingPositive(nums) {
+    const n = nums.length;
+
+    // Rearrange the array: place each positive integer at its respective index
+    for (let i = 0; i < n; i++) {
+        while (0 < nums[i] && nums[i] <= n && nums[nums[i] - 1] !== nums[i]) {
+            [nums[nums[i] - 1], nums[i]] = [nums[i], nums[nums[i] - 1]];
+        }
+    }
+
+    // Iterate through the rearranged array to find the first missing positive integer
+    for (let i = 0; i < n; i++) {
+        if (nums[i] !== i + 1) {
+            return i + 1;
+        }
+    }
+
+    // If all positive integers from 1 to n are present, return n + 1
+    return n + 1;
+}
+
+// Test cases
+console.log(firstMissingPositive([3, 4, -1, 1]));  // Output: 2
+console.log(firstMissingPositive([1, 2, 0]));     // Output: 3
