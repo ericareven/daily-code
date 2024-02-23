@@ -47,7 +47,7 @@ print(product_except_self(nums1))  # Output: [120, 60, 40, 30, 24]
 nums2 = [3, 2, 1]
 print(product_except_self(nums2))  # Output: [2, 3, 6]
 
-# 3
+# 4
 # Given an array of integers, find the first missing positive integer in linear time and constant space. 
 # In other words, find the lowest positive integer that does not exist in the array. 
 # The array can contain duplicates and negative numbers as well.
@@ -73,3 +73,33 @@ def first_missing_positive(nums):
 # Test cases
 print(first_missing_positive([3, 4, -1, 1]))  # Output: 2
 print(first_missing_positive([1, 2, 0]))     # Output: 3
+
+# 5 SEE JS FOR NOTES
+# cons(a, b) constructs a pair, and car(pair) and cdr(pair) returns the first and last element of that pair. 
+# For example, car(cons(3, 4)) returns 3, and cdr(cons(3, 4)) returns 4.
+# Given this implementation of cons:
+# def cons(a, b):
+#     def pair(f):
+#         return f(a, b)
+#     return pair
+# Implement car and cdr.
+#
+
+def cons(a, b):
+    def pair(f):
+        return f(a, b)
+    return pair
+
+def car(pair):
+    def get_first(a, b):
+        return a
+    return pair(get_first)
+
+def cdr(pair):
+    def get_last(a, b):
+        return b
+    return pair(get_last)
+
+# Example usage:
+print(car(cons(3, 4)))  # Output: 3
+print(cdr(cons(3, 4)))  # Output: 4

@@ -53,7 +53,7 @@ console.log(productExceptSelf(nums1)); // Output: [120, 60, 40, 30, 24]
 const nums2 = [3, 2, 1];
 console.log(productExceptSelf(nums2)); // Output: [2, 3, 6]
 
-/* 3
+/* 4
 Given an array of integers, find the first missing positive integer in linear time and constant space. 
 In other words, find the lowest positive integer that does not exist in the array. 
 The array can contain duplicates and negative numbers as well.
@@ -84,3 +84,53 @@ function firstMissingPositive(nums) {
 // Test cases
 console.log(firstMissingPositive([3, 4, -1, 1]));  // Output: 2
 console.log(firstMissingPositive([1, 2, 0]));     // Output: 3
+
+/* 5
+cons(a, b) constructs a pair, and car(pair) and cdr(pair) returns the first and last element of that pair. 
+For example, car(cons(3, 4)) returns 3, and cdr(cons(3, 4)) returns 4.
+Given this implementation of cons:
+def cons(a, b):
+    def pair(f):
+        return f(a, b)
+    return pair
+Implement car and cdr.
+*/
+
+function cons(a, b) {
+    function pair(f) {
+        return f(a, b);
+    }
+    return pair;
+}
+
+function car(pair) {
+    function getFirst(a, b) {
+        return a;
+    }
+    return pair(getFirst);
+}
+
+function cdr(pair) {
+    function getLast(a, b) {
+        return b;
+    }
+    return pair(getLast);
+}
+
+// Example usage:
+console.log(car(cons(3, 4))); // Output: 3
+console.log(cdr(cons(3, 4))); // Output: 4
+
+
+/*
+The purpose of writing these functions is to implement a fundamental concept in computer science and programming languages known as "pairing" or "cons cells." 
+In languages like Lisp, pairs or cons cells are used to build more complex data structures like lists, trees, and more.
+Here's a breakdown of the purpose of each function:
+cons: This function is used to create a pair or a cons cell. It takes two values a and b and returns a function pair that represents the pair (a, b). 
+The pair function takes another function f as an argument and applies f to a and b. This technique of using higher-order functions allows us to represent pairs in a functional programming style.
+car: This function is used to extract the first element of a pair. It takes a pair as an argument and returns the first element a of that pair. 
+In the context of cons cells, car is often used to access the head of a list or the left child of a tree node.
+cdr: This function is used to extract the second element of a pair. It takes a pair as an argument and returns the second element b of that pair. 
+In the context of cons cells, cdr is often used to access the tail of a list or the right child of a tree node.
+These functions are foundational building blocks in languages like Lisp and Scheme, where pairs and cons cells are used extensively to construct data structures.
+*/
