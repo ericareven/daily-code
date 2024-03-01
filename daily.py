@@ -135,22 +135,6 @@ def num_decodings(message):
 message = "111"
 print(num_decodings(message))  # Output should be 3
 
-
-# 8
-# A unival tree (which stands for "universal value") is a tree where all nodes under it have the same value.
-# Given the root to a binary tree, count the number of unival subtrees.
-# For example, the following tree has 5 unival subtrees:
-
-#    0
-#   / \
-#  1   0
-#     / \
-#    1   0
-#   / \
-#  1   1
-
-# 
-
 # 9
 # Given a list of integers, write a function that returns the largest sum of non-adjacent numbers. Numbers can be 0 or negative.
 # For example, [2, 4, 6, 2, 5] should return 13, since we pick 2, 6, and 5. [5, 1, 1, 5] should return 10, since we pick 5 and 5.

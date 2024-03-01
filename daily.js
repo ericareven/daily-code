@@ -185,6 +185,51 @@ For example, the following tree has 5 unival subtrees:
 
  */
 
+class TreeNode {
+    constructor(val) {
+        this.val = val;
+        this.left = this.right = null;
+    }
+}
+
+function countUnivalSubtrees(root) {
+    let count = 0;
+
+    function isUnival(node) {
+        if (node === null) return true;
+
+        const leftIsUnival = isUnival(node.left);
+        const rightIsUnival = isUnival(node.right);
+
+        if (leftIsUnival && rightIsUnival) {
+            if (
+                (node.left === null || node.left.val === node.val) &&
+                (node.right === null || node.right.val === node.val)
+            ) {
+                count++;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    isUnival(root);
+    return count;
+}
+
+// Example usage:
+const root = new TreeNode(0);
+root.left = new TreeNode(1);
+root.right = new TreeNode(0);
+root.right.left = new TreeNode(1);
+root.right.right = new TreeNode(0);
+root.right.left.left = new TreeNode(1);
+root.right.left.right = new TreeNode(1);
+
+console.log(countUnivalSubtrees(root)); // Output should be 5
+
+
 /* 9
 Given a list of integers, write a function that returns the largest sum of non-adjacent numbers. Numbers can be 0 or negative.
 For example, [2, 4, 6, 2, 5] should return 13, since we pick 2, 6, and 5. [5, 1, 1, 5] should return 10, since we pick 5 and 5.
