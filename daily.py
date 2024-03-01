@@ -140,6 +140,26 @@ print(num_decodings(message))  # Output should be 3
 # For example, [2, 4, 6, 2, 5] should return 13, since we pick 2, 6, and 5. [5, 1, 1, 5] should return 10, since we pick 5 and 5.
 #
 
+def max_non_adjacent_sum(arr):
+    if len(arr) == 0:
+        return 0
+    if len(arr) == 1:
+        return max(0, arr[0])
+
+    inclusive = arr[0]
+    exclusive = 0
+
+    for i in range(1, len(arr)):
+        temp = inclusive
+        inclusive = max(inclusive, exclusive + arr[i])
+        exclusive = temp
+
+    return max(inclusive, exclusive)
+
+# Example usage:
+print(max_non_adjacent_sum([2, 4, 6, 2, 5]))  # Output: 13
+print(max_non_adjacent_sum([5, 1, 1, 5]))     # Output: 10
+
 # 10
 # Implement a job scheduler which takes in a function f and an integer n, and calls f after n milliseconds.
 # 

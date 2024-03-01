@@ -235,6 +235,26 @@ Given a list of integers, write a function that returns the largest sum of non-a
 For example, [2, 4, 6, 2, 5] should return 13, since we pick 2, 6, and 5. [5, 1, 1, 5] should return 10, since we pick 5 and 5.
 */
 
+function maxNonAdjacentSum(arr) {
+    if (arr.length === 0) return 0;
+    if (arr.length === 1) return Math.max(0, arr[0]);
+
+    let inclusive = arr[0];
+    let exclusive = 0;
+
+    for (let i = 1; i < arr.length; i++) {
+        let temp = inclusive;
+        inclusive = Math.max(inclusive, exclusive + arr[i]);
+        exclusive = temp;
+    }
+
+    return Math.max(inclusive, exclusive);
+}
+
+// Example usage:
+console.log(maxNonAdjacentSum([2, 4, 6, 2, 5])); // Output: 13
+console.log(maxNonAdjacentSum([5, 1, 1, 5]));    // Output: 10
+
 /* 10
 Implement a job scheduler which takes in a function f and an integer n, and calls f after n milliseconds.
 */
