@@ -134,3 +134,69 @@ cdr: This function is used to extract the second element of a pair. It takes a p
 In the context of cons cells, cdr is often used to access the tail of a list or the right child of a tree node.
 These functions are foundational building blocks in languages like Lisp and Scheme, where pairs and cons cells are used extensively to construct data structures.
 */
+
+/* 7
+Given the mapping a = 1, b = 2, ... z = 26, and an encoded message, count the number of ways it can be decoded.
+For example, the message '111' would give 3, since it could be decoded as 'aaa', 'ka', and 'ak'.
+You can assume that the messages are decodable. For example, '001' is not allowed.
+*/
+
+function numDecodings(message) {
+    const n = message.length;
+    if (n === 0) return 0;
+    
+    const dp = new Array(n + 1).fill(0);
+    dp[0] = 1;
+    dp[1] = message[0] === '0' ? 0 : 1;
+    
+    for (let i = 2; i <= n; i++) {
+        const oneDigit = parseInt(message.slice(i - 1, i));
+        const twoDigits = parseInt(message.slice(i - 2, i));
+        
+        if (oneDigit >= 1 && oneDigit <= 9) {
+            dp[i] += dp[i - 1];
+        }
+        
+        if (twoDigits >= 10 && twoDigits <= 26) {
+            dp[i] += dp[i - 2];
+        }
+    }
+    
+    return dp[n];
+}
+
+// Example usage:
+const message = "111";
+console.log(numDecodings(message)); // Output should be 3
+
+
+/* 8
+A unival tree (which stands for "universal value") is a tree where all nodes under it have the same value.
+Given the root to a binary tree, count the number of unival subtrees.
+For example, the following tree has 5 unival subtrees:
+
+   0
+  / \
+ 1   0
+    / \
+   1   0
+  / \
+ 1   1
+
+ */
+
+/* 9
+Given a list of integers, write a function that returns the largest sum of non-adjacent numbers. Numbers can be 0 or negative.
+For example, [2, 4, 6, 2, 5] should return 13, since we pick 2, 6, and 5. [5, 1, 1, 5] should return 10, since we pick 5 and 5.
+*/
+
+/* 10
+Implement a job scheduler which takes in a function f and an integer n, and calls f after n milliseconds.
+*/
+
+/* 11
+Implement an autocomplete system. That is, given a query string s and a set of all possible query strings, 
+return all strings in the set that have s as a prefix.
+For example, given the query string de and the set of strings [dog, deer, deal], return [deer, deal].
+Hint: Try preprocessing the dictionary into a more efficient data structure to speed up queries.
+*/
