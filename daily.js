@@ -259,9 +259,69 @@ console.log(maxNonAdjacentSum([5, 1, 1, 5]));    // Output: 10
 Implement a job scheduler which takes in a function f and an integer n, and calls f after n milliseconds.
 */
 
-/* 11
-Implement an autocomplete system. That is, given a query string s and a set of all possible query strings, 
-return all strings in the set that have s as a prefix.
-For example, given the query string de and the set of strings [dog, deer, deal], return [deer, deal].
-Hint: Try preprocessing the dictionary into a more efficient data structure to speed up queries.
+function scheduleJob(f, n) {
+    setTimeout(f, n);
+}
+
+// Example usage:
+function myFunction() {
+    console.log("Job executed!");
+}
+
+scheduleJob(myFunction, 3000); // Call myFunction after 3000 milliseconds (3 seconds)
+
+/* 12
+There exists a staircase with N steps, and you can climb up either 1 or 2 steps at a time. Given N, 
+write a function that returns the number of unique ways you can climb the staircase. The order of the steps matters.
+For example, if N is 4, then there are 5 unique ways:
+
+1, 1, 1, 1
+2, 1, 1
+1, 2, 1
+1, 1, 2
+2, 2
+
+What if, instead of being able to climb 1 or 2 steps at a time, you could climb any number from a set of positive integers X? 
+For example, if X = {1, 3, 5}, you could climb 1, 3, or 5 steps at a time.
+*/
+// Dynamic Programming
+function countWays(N, X) { // N = steps, X = size of steps
+    let dp = new Array(N + 1).fill(0) // Creates an array that stores the number of ways for each step
+
+    dp[0] = 1 // There is only one way to reach the 0th step (by not taking any step)
+
+    for (let i = 1; i <= N; i++) {
+        for (let step of X) {
+            if (i - step >= 0) {
+                dp[i] += dp[i - step]
+            }
+        }
+    }
+    return dp[N]
+}
+
+// Example usage:
+console.log(countWays(4, [1, 2])); // Output: 5 (number of unique ways for N = 4, where steps can be 1 or 2)
+console.log(countWays(4, [1, 3, 5])); // Output: 3 (number of unique ways for N = 4, where steps can be 1, 3, or 5)
+
+
+/* 13
+Given an integer k and a string s, find the length of the longest substring that contains at most k distinct characters.
+For example, given s = "abcba" and k = 2, the longest substring with k distinct characters is "bcb".
+*/
+
+/* 14
+The area of a circle is defined as πr^2. Estimate π to 3 decimal places using a Monte Carlo method.
+Hint: The basic equation of a circle is x2 + y2 = r2.
+*/
+
+/* 15
+Given a stream of elements too large to store in memory, pick a random element from the stream with uniform probability.
+*/
+
+/* 16
+You run an e-commerce website and want to record the last N order ids in a log. 
+Implement a data structure to accomplish this, with the following API:
+record(order_id): adds the order_id to the log
+get_last(i): gets the ith last element from the log. i is guaranteed to be smaller than or equal to N.
 */
