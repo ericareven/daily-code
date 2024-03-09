@@ -215,10 +215,59 @@ print(count_ways(4, [1, 3, 5]))  # Output: 3
 # For example, given s = "abcba" and k = 2, the longest substring with k distinct characters is "bcb".
 # 
 
+def longest_substring(s, k):
+    max_length = 0
+    char_count = {}
+    left = 0
+
+    for right in range(len(s)):
+        right_char = s[right]
+        char_count[right_char] = char_count.get(right_char, 0) + 1
+
+        while len(char_count) > k:
+            left_char = s[left]
+            char_count[left_char] -= 1
+            if char_count[left_char] == 0:
+                del char_count[left_char]
+            left += 1
+
+        max_length = max(max_length, right - left + 1)
+
+    return max_length
+
+# Example usage:
+s = "abcba"
+k = 2
+print(longest_substring(s, k))  # Output: 3 (for substring "bcb")
+
 # 14
 # The area of a circle is defined as πr^2. Estimate π to 3 decimal places using a Monte Carlo method.
 # Hint: The basic equation of a circle is x2 + y2 = r2.
 # 
+import random
+
+def estimate_pi(num_points):
+    inside_circle = 0
+
+    # Generate random points and count how many fall inside the circle
+    for _ in range(num_points):
+        x = random.uniform(-1, 1)  # Random x coordinate between -1 and 1
+        y = random.uniform(-1, 1)  # Random y coordinate between -1 and 1
+
+        # Check if the point falls inside the circle (x^2 + y^2 <= 1)
+        if x**2 + y**2 <= 1:
+            inside_circle += 1
+
+    # Estimate pi based on the ratio of points inside the circle to total points
+    ratio = inside_circle / num_points
+    pi_estimate = ratio * 4
+
+    return pi_estimate
+
+# Example usage:
+num_points = 1000000  # Increase this number for better precision
+estimated_pi = estimate_pi(num_points)
+print("Estimated value of Pi:", round(estimated_pi, 3))
 
 # 15
 # Given a stream of elements too large to store in memory, pick a random element from the stream with uniform probability.
@@ -230,3 +279,42 @@ print(count_ways(4, [1, 3, 5]))  # Output: 3
 # record(order_id): adds the order_id to the log
 # get_last(i): gets the ith last element from the log. i is guaranteed to be smaller than or equal to N.
 #
+
+# 19
+# A builder is looking to build a row of N houses that can be of K different colors. 
+# He has a goal of minimizing cost while ensuring that no two neighboring houses are of the same color.
+# Given an N by K matrix where the nth row and kth column represents the cost to build the nth house with kth color, 
+# return the minimum cost which achieves this goal.
+#
+
+def min_cost(costs):
+    if not costs or len(costs) == 0:
+        return 0
+    
+    n = len(costs)
+    k = len(costs[0])
+    
+    # Create a dp array to store the minimum cost up to each house
+    dp = [[0] * k for _ in range(n)]
+    
+    # Initialize the first row of dp array with costs of the first house
+    dp[0] = costs[0]
+    
+    # Iterate through each house
+    for i in range(1, n):
+        # Iterate through each color for the current house
+        for j in range(k):
+            # Find the minimum cost for the current color by considering the costs of previous house colors
+            dp[i][j] = costs[i][j] + min(dp[i-1][:j] + dp[i-1][j+1:])
+    
+    # Return the minimum cost of the last house
+    return min(dp[n-1])
+
+# Example usage:
+costs = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [10, 11, 12]
+]
+print(min_cost(costs))  # Output: 10

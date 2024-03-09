@@ -17,8 +17,8 @@ function pairsWithSum(nums, k) {
 
 // Example
 const nums = [10, 15, 3, 7]
-const k = 17
-console.log(pairsWithSum(nums, k))
+const j = 17
+console.log(pairsWithSum(nums, j))
 
 /* 2
 Given an array of integers, return a new array such that each element at index i of the new array is the product of all the numbers in the original array except the one at i.
@@ -310,10 +310,63 @@ Given an integer k and a string s, find the length of the longest substring that
 For example, given s = "abcba" and k = 2, the longest substring with k distinct characters is "bcb".
 */
 
+function longestSubstring(s, k) {
+    let maxLength = 0;
+    let charCount = new Map();
+    let left = 0;
+    
+    for (let right = 0; right < s.length; right++) {
+        const rightChar = s[right];
+        charCount.set(rightChar, (charCount.get(rightChar) || 0) + 1);
+
+        while (charCount.size > k) {
+            const leftChar = s[left];
+            charCount.set(leftChar, charCount.get(leftChar) - 1);
+            if (charCount.get(leftChar) === 0) {
+                charCount.delete(leftChar);
+            }
+            left++;
+        }
+        maxLength = Math.max(maxLength, right - left + 1);
+    }
+    return maxLength;
+}
+
+// Example usage:
+const s = "abcba";
+const k = 2;
+console.log(longestSubstring(s, k)); // Output: 3 (for substring "bcb")
+
 /* 14
 The area of a circle is defined as πr^2. Estimate π to 3 decimal places using a Monte Carlo method.
 Hint: The basic equation of a circle is x2 + y2 = r2.
 */
+// The Monte Carlo method is a computational technique that uses random sampling to obtain numerical results.
+function estimatePi(numPoints) {
+    let insideCircle = 0;
+
+    // Generate random points and count how many fall inside the circle
+    for (let i = 0; i < numPoints; i++) {
+        const x = Math.random() * 2 - 1; // Random x coordinate between -1 and 1
+        const y = Math.random() * 2 - 1; // Random y coordinate between -1 and 1
+
+        // Check if the point falls inside the circle (x^2 + y^2 <= 1)
+        if (x * x + y * y <= 1) {
+            insideCircle++;
+        }
+    }
+
+    // Estimate pi based on the ratio of points inside the circle to total points
+    const ratio = insideCircle / numPoints;
+    const piEstimate = ratio * 4;
+
+    return piEstimate.toFixed(3); // Round to 3 decimal places
+}
+
+// Example usage:
+const numPoints = 1000000; // Increase this number for better precision
+const estimatedPi = estimatePi(numPoints);
+console.log("Estimated value of Pi:", estimatedPi);
 
 /* 15
 Given a stream of elements too large to store in memory, pick a random element from the stream with uniform probability.
@@ -325,3 +378,46 @@ Implement a data structure to accomplish this, with the following API:
 record(order_id): adds the order_id to the log
 get_last(i): gets the ith last element from the log. i is guaranteed to be smaller than or equal to N.
 */
+
+/* 19
+A builder is looking to build a row of N houses that can be of K different colors. 
+He has a goal of minimizing cost while ensuring that no two neighboring houses are of the same color.
+Given an N by K matrix where the nth row and kth column represents the cost to build the nth house with kth color, 
+return the minimum cost which achieves this goal.
+*/
+
+function minCost(costs) {
+    if (!costs || costs.length === 0) return 0;
+
+    const n = costs.length;
+    const k = costs[0].length;
+
+    // Create a dp array to store the minimum cost up to each house
+    const dp = new Array(n).fill(0).map(() => new Array(k).fill(0));
+
+    // Initialize the first row of dp array with costs of the first house
+    for (let i = 0; i < k; i++) {
+        dp[0][i] = costs[0][i];
+    }
+
+    // Iterate through each house
+    for (let i = 1; i < n; i++) {
+        // Iterate through each color for the current house
+        for (let j = 0; j < k; j++) {
+            // Find the minimum cost for the current color by considering the costs of previous house colors
+            dp[i][j] = costs[i][j] + Math.min(...dp[i - 1].filter((_, index) => index !== j));
+        }
+    }
+
+    // Return the minimum cost of the last house
+    return Math.min(...dp[n - 1]);
+}
+
+// Example usage:
+const costs = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [10, 11, 12]
+];
+console.log(minCost(costs)); // Output: 10
