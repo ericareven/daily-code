@@ -273,6 +273,26 @@ print("Estimated value of Pi:", round(estimated_pi, 3))
 # Given a stream of elements too large to store in memory, pick a random element from the stream with uniform probability.
 # 
 
+import random
+
+def get_random_element_from_stream(stream):
+    selected = None
+    count = 0
+
+    for element in stream:
+        count += 1
+        # With probability 1/count, replace the selected element with the current element
+        if random.randint(1, count) == 1:
+            selected = element
+
+    return selected
+
+# Example usage:
+stream = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Example stream
+random_element = get_random_element_from_stream(stream)
+print("Random element from the stream:", random_element)
+
+
 # 16
 # You run an e-commerce website and want to record the last N order ids in a log. 
 # Implement a data structure to accomplish this, with the following API:
@@ -318,3 +338,9 @@ costs = [
     [10, 11, 12]
 ]
 print(min_cost(costs))  # Output: 10
+
+# 21
+# Given an array of time intervals (start, end) for classroom lectures (possibly overlapping), 
+# find the minimum number of rooms required.
+# For example, given [(30, 75), (0, 50), (60, 150)], you should return 2.
+# 

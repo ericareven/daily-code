@@ -371,6 +371,26 @@ console.log("Estimated value of Pi:", estimatedPi);
 /* 15
 Given a stream of elements too large to store in memory, pick a random element from the stream with uniform probability.
 */
+function getRandomElementFromStream(stream) {
+    let selected = null; 
+    let count = 0; 
+
+    for (const element of stream) {
+        count++;
+        // With probability 1/count, replace the selected element with the current element
+        if (Math.floor(Math.random() * count) === 0) {
+            selected = element;
+        }
+    }
+
+    return selected;
+}
+
+// Example usage:
+const stream = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Example stream
+const randomElement = getRandomElementFromStream(stream);
+console.log("Random element from the stream:", randomElement);
+
 
 /* 16
 You run an e-commerce website and want to record the last N order ids in a log. 
@@ -421,3 +441,9 @@ const costs = [
     [10, 11, 12]
 ];
 console.log(minCost(costs)); // Output: 10
+
+/* 21
+Given an array of time intervals (start, end) for classroom lectures (possibly overlapping), 
+find the minimum number of rooms required.
+For example, given [(30, 75), (0, 50), (60, 150)], you should return 2.
+*/
