@@ -480,6 +480,38 @@ find the minimum number of rooms required.
 For example, given [(30, 75), (0, 50), (60, 150)], you should return 2.
 */
 
+function minRooms(intervals) {
+    if (intervals.length === 0) return 0;
+
+    const startTimes = intervals.map(interval => interval[0]).sort((a, b) => a - b);
+    const endTimes = intervals.map(interval => interval[1]).sort((a, b) => a - b);
+
+    let roomsNeeded = 0;
+    let minRoomsNeeded = 0;
+    let startPtr = 0;
+    let endPtr = 0;
+
+    while (startPtr < startTimes.length) {
+        if (startTimes[startPtr] < endTimes[endPtr]) {
+            // A new lecture starts before another ends, so we need an additional room
+            roomsNeeded++;
+            minRoomsNeeded = Math.max(minRoomsNeeded, roomsNeeded);
+            startPtr++;
+        } else {
+            // An ongoing lecture ends, so we release a room
+            roomsNeeded--;
+            endPtr++;
+        }
+    }
+
+    return minRoomsNeeded;
+}
+
+// Example usage:
+const intervals = [[30, 75], [0, 50], [60, 150]];
+console.log(minRooms(intervals)); // Output: 2
+
+
 /* 22
 Given a dictionary of words and a string made up of those words (no spaces), return the original sentence in a list. 
 If there is more than one possible reconstruction, return any of them. If there is no possible reconstruction, then return null.

@@ -373,6 +373,35 @@ print(min_cost(costs))  # Output: 10
 # For example, given [(30, 75), (0, 50), (60, 150)], you should return 2.
 # 
 
+def min_rooms(intervals):
+    if not intervals:
+        return 0
+
+    start_times = sorted(interval[0] for interval in intervals)
+    end_times = sorted(interval[1] for interval in intervals)
+
+    rooms_needed = 0
+    min_rooms_needed = 0
+    start_ptr = end_ptr = 0
+
+    while start_ptr < len(start_times):
+        if start_times[start_ptr] < end_times[end_ptr]:
+            # A new lecture starts before another ends, so we need an additional room
+            rooms_needed += 1
+            min_rooms_needed = max(min_rooms_needed, rooms_needed)
+            start_ptr += 1
+        else:
+            # An ongoing lecture ends, so we release a room
+            rooms_needed -= 1
+            end_ptr += 1
+
+    return min_rooms_needed
+
+# Example usage:
+intervals = [(30, 75), (0, 50), (60, 150)]
+print(min_rooms(intervals))  # Output: 2
+
+
 # 22
 # Given a dictionary of words and a string made up of those words (no spaces), return the original sentence in a list. 
 # If there is more than one possible reconstruction, return any of them. If there is no possible reconstruction, then return null.
