@@ -399,6 +399,38 @@ record(order_id): adds the order_id to the log
 get_last(i): gets the ith last element from the log. i is guaranteed to be smaller than or equal to N.
 */
 
+class OrderLog {
+    constructor(size) {
+        this.size = size;
+        this.log = new Array(size).fill(null);
+        this.currentIdx = 0;
+    }
+
+    record(orderId) {
+        this.log[this.currentIdx] = orderId;
+        this.currentIdx = (this.currentIdx + 1) % this.size; // Move to the next index in a circular manner
+    }
+
+    get_last(i) {
+        // Calculate the index to retrieve the ith last element
+        const idx = (this.currentIdx - i + this.size) % this.size;
+        return this.log[idx];
+    }
+}
+
+// Example usage:
+const orderLog = new OrderLog(5); // Create an order log with size 5
+orderLog.record(1001);
+orderLog.record(1002);
+orderLog.record(1003);
+orderLog.record(1004);
+orderLog.record(1005);
+
+console.log(orderLog.get_last(1)); // Output: 1005 (last order id)
+console.log(orderLog.get_last(2)); // Output: 1004 (second last order id)
+console.log(orderLog.get_last(5)); // Output: 1001 (oldest order id)
+
+
 /* 19
 A builder is looking to build a row of N houses that can be of K different colors. 
 He has a goal of minimizing cost while ensuring that no two neighboring houses are of the same color.
@@ -446,4 +478,11 @@ console.log(minCost(costs)); // Output: 10
 Given an array of time intervals (start, end) for classroom lectures (possibly overlapping), 
 find the minimum number of rooms required.
 For example, given [(30, 75), (0, 50), (60, 150)], you should return 2.
+*/
+
+/* 22
+Given a dictionary of words and a string made up of those words (no spaces), return the original sentence in a list. 
+If there is more than one possible reconstruction, return any of them. If there is no possible reconstruction, then return null.
+For example, given the set of words 'quick', 'brown', 'the', 'fox', and the string "thequickbrownfox", you should return ['the', 'quick', 'brown', 'fox'].
+Given the set of words 'bed', 'bath', 'bedbath', 'and', 'beyond', and the string "bedbathandbeyond", return either ['bed', 'bath', 'and', 'beyond] or ['bedbath', 'and', 'beyond'].
 */

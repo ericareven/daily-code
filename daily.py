@@ -300,6 +300,34 @@ print("Random element from the stream:", random_element)
 # get_last(i): gets the ith last element from the log. i is guaranteed to be smaller than or equal to N.
 #
 
+class OrderLog:
+    def __init__(self, size):
+        self.size = size
+        self.log = [None] * size
+        self.current_idx = 0
+
+    def record(self, order_id):
+        self.log[self.current_idx] = order_id
+        self.current_idx = (self.current_idx + 1) % self.size  # Move to the next index in a circular manner
+
+    def get_last(self, i):
+        # Calculate the index to retrieve the ith last element
+        idx = (self.current_idx - i + self.size) % self.size
+        return self.log[idx]
+
+# Example usage:
+order_log = OrderLog(5)  # Create an order log with size 5
+order_log.record(1001)
+order_log.record(1002)
+order_log.record(1003)
+order_log.record(1004)
+order_log.record(1005)
+
+print(order_log.get_last(1))  # Output: 1005 (last order id)
+print(order_log.get_last(2))  # Output: 1004 (second last order id)
+print(order_log.get_last(5))  # Output: 1001 (oldest order id)
+
+
 # 19
 # A builder is looking to build a row of N houses that can be of K different colors. 
 # He has a goal of minimizing cost while ensuring that no two neighboring houses are of the same color.
@@ -344,3 +372,10 @@ print(min_cost(costs))  # Output: 10
 # find the minimum number of rooms required.
 # For example, given [(30, 75), (0, 50), (60, 150)], you should return 2.
 # 
+
+# 22
+# Given a dictionary of words and a string made up of those words (no spaces), return the original sentence in a list. 
+# If there is more than one possible reconstruction, return any of them. If there is no possible reconstruction, then return null.
+# For example, given the set of words 'quick', 'brown', 'the', 'fox', and the string "thequickbrownfox", you should return ['the', 'quick', 'brown', 'fox'].
+# Given the set of words 'bed', 'bath', 'bedbath', 'and', 'beyond', and the string "bedbathandbeyond", return either ['bed', 'bath', 'and', 'beyond] or ['bedbath', 'and', 'beyond'].
+#
