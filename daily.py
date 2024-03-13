@@ -408,3 +408,35 @@ print(min_rooms(intervals))  # Output: 2
 # For example, given the set of words 'quick', 'brown', 'the', 'fox', and the string "thequickbrownfox", you should return ['the', 'quick', 'brown', 'fox'].
 # Given the set of words 'bed', 'bath', 'bedbath', 'and', 'beyond', and the string "bedbathandbeyond", return either ['bed', 'bath', 'and', 'beyond] or ['bedbath', 'and', 'beyond'].
 #
+
+def word_break(s, word_dict):
+    def word_break_helper(s, word_dict, memo):
+        if s in memo:
+            return memo[s]
+
+        if not s:
+            return []
+
+        result = []
+        for word in word_dict:
+            if s.startswith(word):
+                # Recursively check the remaining part of the string after removing the matched word
+                rest = word_break_helper(s[len(word):], word_dict, memo)
+                if rest is not None:
+                    result = [word] + rest
+                    memo[s] = result
+                    return result
+
+        memo[s] = None
+        return None
+
+    return word_break_helper(s, word_dict, {})
+
+# Example usage:
+word_dict1 = {'quick', 'brown', 'the', 'fox'}
+s1 = "thequickbrownfox"
+print(word_break(s1, word_dict1))  # Output: ['the', 'quick', 'brown', 'fox']
+
+word_dict2 = {'bed', 'bath', 'bedbath', 'and', 'beyond'}
+s2 = "bedbathandbeyond"
+print(word_break(s2, word_dict2))  # Output: ['bed', 'bath', 'and', 'beyond'] or ['bedbath', 'and', 'beyond']

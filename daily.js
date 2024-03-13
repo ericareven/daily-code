@@ -518,3 +518,36 @@ If there is more than one possible reconstruction, return any of them. If there 
 For example, given the set of words 'quick', 'brown', 'the', 'fox', and the string "thequickbrownfox", you should return ['the', 'quick', 'brown', 'fox'].
 Given the set of words 'bed', 'bath', 'bedbath', 'and', 'beyond', and the string "bedbathandbeyond", return either ['bed', 'bath', 'and', 'beyond] or ['bedbath', 'and', 'beyond'].
 */
+
+function wordBreak(s, wordDict) {
+    const wordBreakHelper = (s, wordDict, memo) => {
+        if (memo.has(s)) return memo.get(s);
+        if (s === '') return [];
+
+        const result = [];
+        for (const word of wordDict) {
+            if (s.startsWith(word)) {
+                const rest = wordBreakHelper(s.slice(word.length), wordDict, memo);
+                if (rest !== null) {
+                    result.push(word);
+                    result.push(...rest);
+                    memo.set(s, result);
+                    return result;
+                }
+            }
+        }
+        memo.set(s, null);
+        return null;
+    };
+
+    return wordBreakHelper(s, wordDict, new Map());
+}
+
+// Example usage:
+const wordDict1 = new Set(['quick', 'brown', 'the', 'fox']);
+const s1 = "thequickbrownfox";
+console.log(wordBreak(s1, wordDict1)); // Output: ['the', 'quick', 'brown', 'fox']
+
+const wordDict2 = new Set(['bed', 'bath', 'bedbath', 'and', 'beyond']);
+const s2 = "bedbathandbeyond";
+console.log(wordBreak(s2, wordDict2)); // Output: ['bed', 'bath', 'and', 'beyond'] or ['bedbath', 'and', 'beyond']
