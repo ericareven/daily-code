@@ -551,3 +551,64 @@ console.log(wordBreak(s1, wordDict1)); // Output: ['the', 'quick', 'brown', 'fox
 const wordDict2 = new Set(['bed', 'bath', 'bedbath', 'and', 'beyond']);
 const s2 = "bedbathandbeyond";
 console.log(wordBreak(s2, wordDict2)); // Output: ['bed', 'bath', 'and', 'beyond'] or ['bedbath', 'and', 'beyond']
+
+/* 23
+You are given an M by N matrix consisting of booleans that represents a board. Each True boolean represents a wall. 
+Each False boolean represents a tile you can walk on.
+Given this matrix, a start coordinate, and an end coordinate, return the minimum number of steps required to reach the end coordinate from the start. 
+If there is no possible path, then return null. You can move up, left, down, and right. 
+You cannot move through walls. You cannot wrap around the edges of the board.
+For example, given the following board:
+
+[[f, f, f, f],
+[t, t, f, t],
+[f, f, f, f],
+[f, f, f, f]]
+
+and start = (3, 0) (bottom left) and end = (0, 0) (top left), the minimum number of steps required to reach the end is 7, 
+since we would need to go through (1, 2) because there is a wall everywhere else on the second row.
+*/
+
+function minStepsToReachEnd(board, start, end) {
+    const numRows = board.length;
+    const numCols = board[0].length;
+
+    const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+
+    // Queue to store the positions to be visited along with their steps
+    const queue = [[start, 0]];
+    // Set to store visited positions
+    const visited = new Set();
+
+    while (queue.length > 0) {
+        const [currentPos, steps] = queue.shift();
+        const [row, col] = currentPos;
+
+        if (row === end[0] && col === end[1]) {
+            return steps;
+        }
+        // Explore all four directions
+        for (const [dRow, dCol] of directions) {
+            const newRow = row + dRow;
+            const newCol = col + dCol;
+            // Check if the new position is within the board bounds and not a wall
+            if (newRow >= 0 && newRow < numRows && newCol >= 0 && newCol < numCols && !board[newRow][newCol] && !visited.has(`${newRow},${newCol}`)) {
+                queue.push([[newRow, newCol], steps + 1]);
+                visited.add(`${newRow},${newCol}`);
+            }
+        }
+    }
+
+    return null;
+}
+
+// Example usage:
+const board = [
+    [false, false, false, false],
+    [true, true, false, true],
+    [false, false, false, false],
+    [false, false, false, false]
+];
+const start = [3, 0];
+const end = [0, 0];
+console.log(minStepsToReachEnd(board, start, end)); // Output: 7

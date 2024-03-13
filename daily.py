@@ -440,3 +440,59 @@ print(word_break(s1, word_dict1))  # Output: ['the', 'quick', 'brown', 'fox']
 word_dict2 = {'bed', 'bath', 'bedbath', 'and', 'beyond'}
 s2 = "bedbathandbeyond"
 print(word_break(s2, word_dict2))  # Output: ['bed', 'bath', 'and', 'beyond'] or ['bedbath', 'and', 'beyond']
+
+# 23
+# You are given an M by N matrix consisting of booleans that represents a board. Each True boolean represents a wall. 
+# Each False boolean represents a tile you can walk on.
+# Given this matrix, a start coordinate, and an end coordinate, return the minimum number of steps required to reach the end coordinate from the start. 
+# If there is no possible path, then return null. You can move up, left, down, and right. 
+# You cannot move through walls. You cannot wrap around the edges of the board.
+# For example, given the following board:
+
+# [[f, f, f, f],
+# [t, t, f, t],
+# [f, f, f, f],
+# [f, f, f, f]]
+
+# and start = (3, 0) (bottom left) and end = (0, 0) (top left), the minimum number of steps required to reach the end is 7, 
+# since we would need to go through (1, 2) because there is a wall everywhere else on the second row.
+# 
+from collections import deque
+
+def min_steps_to_reach_end(board, start, end):
+    num_rows = len(board)
+    num_cols = len(board[0])
+
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+    # Queue to store the positions to be visited along with their steps
+    queue = deque([(start, 0)])
+    # Set to store visited positions
+    visited = set()
+
+    while queue:
+        (row, col), steps = queue.popleft()
+
+        if (row, col) == end:
+            return steps
+        # Explore all four directions
+        for d_row, d_col in directions:
+            new_row = row + d_row
+            new_col = col + d_col
+            # Check if the new position is within the board bounds and not a wall
+            if 0 <= new_row < num_rows and 0 <= new_col < num_cols and not board[new_row][new_col] and (new_row, new_col) not in visited:
+                queue.append(((new_row, new_col), steps + 1))
+                visited.add((new_row, new_col))
+
+    return None
+
+# Example usage:
+board = [
+    [False, False, False, False],
+    [True, True, False, True],
+    [False, False, False, False],
+    [False, False, False, False]
+]
+start = (3, 0)
+end = (0, 0)
+print(min_steps_to_reach_end(board, start, end))  # Output: 7
