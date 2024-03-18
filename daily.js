@@ -612,3 +612,71 @@ const board = [
 const start = [3, 0];
 const end = [0, 0];
 console.log(minStepsToReachEnd(board, start, end)); // Output: 7
+
+/* 26
+Given a singly linked list and an integer k, remove the kth last element from the list. 
+k is guaranteed to be smaller than the length of the list.
+The list is very long, so making more than one pass is prohibitively expensive.
+Do this in constant space and in one pass.
+*/
+
+class ListNode {
+    constructor(value, next = null) {
+        this.value = value;
+        this.next = next;
+    }
+}
+
+function removeKthLast(head, k) {
+    const dummy = new ListNode();
+    dummy.next = head;
+    let fast = dummy;
+    let slow = dummy;
+
+    // Move fast pointer k steps ahead
+    for (let i = 0; i < k; i++) {
+        fast = fast.next;
+    }
+
+    // Move both pointers until fast reaches the end
+    while (fast.next) {
+        fast = fast.next;
+        slow = slow.next;
+    }
+
+    // Remove the kth last element
+    slow.next = slow.next.next;
+
+    return dummy.next;
+}
+
+/* 27
+Given a string of round, curly, and square open and closing brackets, 
+return whether the brackets are balanced (well-formed).
+For example, given the string "([])[]({})", you should return true.
+Given the string "([)]" or "((()", you should return false.
+*/
+
+function isValid(s) {
+    const stack = [];
+    const pairs = {
+        '(': ')',
+        '[': ']',
+        '{': '}'
+    };
+
+    for (let i = 0; i < s.length; i++) {
+        const char = s[i];
+        if (char in pairs) {
+            stack.push(char); // Push opening brackets onto the stack
+        } else {
+            // Check if the stack is empty or if the top element doesn't match the current closing bracket
+            if (stack.length === 0 || pairs[stack.pop()] !== char) {
+                return false;
+            }
+        }
+    }
+
+    // Check if there are any remaining brackets in the stack
+    return stack.length === 0;
+}

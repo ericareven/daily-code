@@ -496,3 +496,57 @@ board = [
 start = (3, 0)
 end = (0, 0)
 print(min_steps_to_reach_end(board, start, end))  # Output: 7
+
+# 26
+# Given a singly linked list and an integer k, remove the kth last element from the list. 
+# k is guaranteed to be smaller than the length of the list.
+# The list is very long, so making more than one pass is prohibitively expensive.
+# Do this in constant space and in one pass.
+# 
+
+class ListNode:
+    def __init__(self, value=0, next=None):
+        self.value = value
+        self.next = next
+
+def remove_kth_last(head, k):
+    dummy = ListNode()
+    dummy.next = head
+    fast = dummy
+    slow = dummy
+
+    # Move fast pointer k steps ahead
+    for _ in range(k):
+        fast = fast.next
+
+    # Move both pointers until fast reaches the end
+    while fast.next:
+        fast = fast.next
+        slow = slow.next
+
+    # Remove the kth last element
+    slow.next = slow.next.next
+
+    return dummy.next
+
+# 27
+# Given a string of round, curly, and square open and closing brackets, 
+# return whether the brackets are balanced (well-formed).
+# For example, given the string "([])[]({})", you should return true.
+# Given the string "([)]" or "((()", you should return false.
+# 
+
+def isValid(s: str) -> bool:
+    stack = []
+    pairs = {'(': ')', '[': ']', '{': '}'}
+
+    for char in s:
+        if char in pairs:
+            stack.append(char)  # Push opening brackets onto the stack
+        else:
+            # Check if the stack is empty or if the top element doesn't match the current closing bracket
+            if not stack or pairs[stack.pop()] != char:
+                return False
+
+    # Check if there are any remaining brackets in the stack
+    return len(stack) == 0
