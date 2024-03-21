@@ -642,3 +642,81 @@ encoded = encode(input_str)
 print("Encoded:", encoded)  # Output: "4A3B2C1D2A"
 decoded = decode(encoded)
 print("Decoded:", decoded)  # Output: "AAAABBBCCDAA"
+
+# 30
+# You are given an array of non-negative integers that represents a two-dimensional elevation map where 
+# each element is unit-width wall and the integer is the height. 
+# Suppose it will rain and all spots between two walls get filled up.
+# Compute how many units of water remain trapped on the map in O(N) time and O(1) space.
+# For example, given the input [2, 1, 2], we can hold 1 unit of water in the middle.
+# Given the input [3, 0, 1, 3, 0, 5], we can hold 3 units in the first index, 2 in the second, and 3 in the fourth index 
+# (we cannot hold 5 since it would run off to the left), so we can trap 8 units of water.
+#
+
+def trap_water(heights):
+    left = 0
+    right = len(heights) - 1
+    left_max = 0
+    right_max = 0
+    trapped_water = 0
+
+    while left < right:
+        if heights[left] < heights[right]:
+            if heights[left] >= left_max:
+                left_max = heights[left]
+            else:
+                trapped_water += left_max - heights[left]
+            left += 1
+        else:
+            if heights[right] >= right_max:
+                right_max = heights[right]
+            else:
+                trapped_water += right_max - heights[right]
+            right -= 1
+
+    return trapped_water
+
+# Example usage:
+heights1 = [2, 1, 2]
+print(trap_water(heights1))  # Output: 1
+
+heights2 = [3, 0, 1, 3, 0, 5]
+print(trap_water(heights2))  # Output: 8
+
+# 31
+# The edit distance between two strings refers to the minimum number of character insertions, deletions, 
+# and substitutions required to change one string to the other. For example, the edit distance between “kitten” and “sitting” is three: 
+# substitute the “k” for “s”, substitute the “e” for “i”, and append a “g”.
+# Given two strings, compute the edit distance between them.
+#
+
+def edit_distance(s1, s2):
+    m = len(s1)
+    n = len(s2)
+
+    # Create a 2D array to store the edit distances
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    # Initialize the first row and column with the distance from an empty string
+    for i in range(m + 1):
+        dp[i][0] = i
+    for j in range(n + 1):
+        dp[0][j] = j
+
+    # Fill the DP table
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s1[i - 1] == s2[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1]
+            else:
+                dp[i][j] = 1 + min(dp[i - 1][j],        # Deletion
+                                   dp[i][j - 1],        # Insertion
+                                   dp[i - 1][j - 1])   # Substitution
+
+    # The value at the bottom-right corner of the DP table contains the edit distance
+    return dp[m][n]
+
+# Example usage:
+s1 = "kitten"
+s2 = "sitting"
+print(edit_distance(s1, s2))  # Output: 3

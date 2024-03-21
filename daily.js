@@ -782,3 +782,94 @@ const encoded = encode(input);
 console.log("Encoded:", encoded); // Output: "4A3B2C1D2A"
 const decoded = decode(encoded);
 console.log("Decoded:", decoded); // Output: "AAAABBBCCDAA"
+
+/* 30
+You are given an array of non-negative integers that represents a two-dimensional elevation map where 
+each element is unit-width wall and the integer is the height. 
+Suppose it will rain and all spots between two walls get filled up.
+Compute how many units of water remain trapped on the map in O(N) time and O(1) space.
+For example, given the input [2, 1, 2], we can hold 1 unit of water in the middle.
+Given the input [3, 0, 1, 3, 0, 5], we can hold 3 units in the first index, 2 in the second, and 3 in the fourth index 
+(we cannot hold 5 since it would run off to the left), so we can trap 8 units of water.
+*/
+
+function trapWater(heights) {
+    let left = 0;
+    let right = heights.length - 1;
+    let leftMax = 0;
+    let rightMax = 0;
+    let trappedWater = 0;
+
+    while (left < right) {
+        if (heights[left] < heights[right]) {
+            if (heights[left] >= leftMax) {
+                leftMax = heights[left];
+            } else {
+                trappedWater += leftMax - heights[left];
+            }
+            left++;
+        } else {
+            if (heights[right] >= rightMax) {
+                rightMax = heights[right];
+            } else {
+                trappedWater += rightMax - heights[right];
+            }
+            right--;
+        }
+    }
+
+    return trappedWater;
+}
+
+// Example usage:
+const heights1 = [2, 1, 2];
+console.log(trapWater(heights1)); // Output: 1
+
+const heights2 = [3, 0, 1, 3, 0, 5];
+console.log(trapWater(heights2)); // Output: 8
+
+/* 31
+The edit distance between two strings refers to the minimum number of character insertions, deletions, 
+and substitutions required to change one string to the other. For example, the edit distance between “kitten” and “sitting” is three: 
+substitute the “k” for “s”, substitute the “e” for “i”, and append a “g”.
+Given two strings, compute the edit distance between them.
+*/
+
+function editDistance(string1, string2) {
+    const m = string1.length;
+    const n = string2.length;
+
+    // Create a 2D array to store the edit distances
+    const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+
+    // Initialize the first row and column with the distance from an empty string
+    for (let i = 0; i <= m; i++) {
+        dp[i][0] = i;
+    }
+    for (let j = 0; j <= n; j++) {
+        dp[0][j] = j;
+    }
+
+    // Fill the DP table
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (string1[i - 1] === string2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1];
+            } else {
+                dp[i][j] = 1 + Math.min(
+                    dp[i - 1][j],      // Deletion
+                    dp[i][j - 1],      // Insertion
+                    dp[i - 1][j - 1]   // Substitution
+                );
+            }
+        }
+    }
+
+    // The value at the bottom-right corner of the DP table contains the edit distance
+    return dp[m][n];
+}
+
+// Example usage:
+const string1 = "kitten";
+const string2 = "sitting";
+console.log(editDistance(string1, string2)); // Output: 3
