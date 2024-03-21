@@ -26,7 +26,7 @@ For example, if our input was [1, 2, 3, 4, 5], the expected output would be [120
 */
 
 function productExceptSelf(nums) {
-    const result = new Array(n);
+    const result = new Array(nums);
     let product = 1;
 
     // Calculate the product of all elements to the left of each index
@@ -680,3 +680,105 @@ function isValid(s) {
     // Check if there are any remaining brackets in the stack
     return stack.length === 0;
 }
+
+/* 28
+Write an algorithm to justify text. Given a sequence of words and an integer line length k, 
+return a list of strings which represents each line, fully justified.
+More specifically, you should have as many words as possible in each line. There should be at least one space between each word. 
+Pad extra spaces when necessary so that each line has exactly length k. Spaces should be distributed as equally as possible, 
+with the extra spaces, if any, distributed starting from the left.
+If you can only fit one word on a line, then you should pad the right-hand side with spaces.
+Each word is guaranteed not to be longer than k.
+For example, given the list of words ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"] and k = 16, you should return the following:
+
+["the  quick brown", # 1 extra space on the left
+"fox  jumps  over", # 2 extra spaces distributed evenly
+"the   lazy   dog"] # 4 extra spaces distributed evenly
+*/
+function justifyText(words, m) {
+    const result = [];
+    let currentLine = [];
+    let currentLength = 0;
+
+    for (const word of words) {
+        if (currentLength + word.length + currentLine.length > m) {
+            const spacesNeeded = m - currentLength;
+            if (currentLine.length === 1) {
+                const line = currentLine[0] + ' '.repeat(spacesNeeded);
+                result.push(line);
+            } else {
+                const numGaps = currentLine.length - 1;
+                const spacesPerGap = Math.floor(spacesNeeded / numGaps);
+                const extraSpaces = spacesNeeded % numGaps;
+                let line = '';
+                for (let i = 0; i < numGaps; i++) {
+                    line += currentLine[i] + ' '.repeat(spacesPerGap + (i < extraSpaces ? 1 : 0));
+                }
+                line += currentLine[currentLine.length - 1];
+                result.push(line);
+            }
+            currentLine = [];
+            currentLength = 0;
+        }
+
+        currentLine.push(word);
+        currentLength += word.length;
+    }
+
+    const lastLine = currentLine.join(' ') + ' '.repeat(m - currentLength - currentLine.length + 1);
+    result.push(lastLine);
+
+    return result;
+}
+
+// Example usage:
+const words = ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"];
+const m = 16;
+console.log(justifyText(words, m));
+
+/* 29
+Run-length encoding is a fast and simple method of encoding strings. 
+The basic idea is to represent repeated successive characters as a single count and character. 
+For example, the string "AAAABBBCCDAA" would be encoded as "4A3B2C1D2A".
+Implement run-length encoding and decoding. You can assume the string to be encoded have no digits and 
+consists solely of alphabetic characters. You can assume the string to be decoded is valid.
+*/
+
+function encode(s) {
+    let encoded = '';
+    let count = 1;
+
+    for (let i = 0; i < s.length; i++) {
+        if (s[i] === s[i + 1]) {
+            count++;
+        } else {
+            encoded += count + s[i];
+            count = 1;
+        }
+    }
+
+    return encoded;
+}
+
+function decode(s) {
+    let decoded = '';
+    let count = '';
+
+    for (let i = 0; i < s.length; i++) {
+        if (!isNaN(s[i])) {
+            count += s[i];
+        } else {
+            decoded += s[i].repeat(parseInt(count));
+            count = '';
+        }
+    }
+
+    return decoded;
+}
+
+// Example usage:
+const input = "AAAABBBCCDAA";
+const encoded = encode(input);
+console.log("Encoded:", encoded); // Output: "4A3B2C1D2A"
+const decoded = decode(encoded);
+console.log("Decoded:", decoded); // Output: "AAAABBBCCDAA"

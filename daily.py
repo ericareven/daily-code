@@ -550,3 +550,95 @@ def isValid(s: str) -> bool:
 
     # Check if there are any remaining brackets in the stack
     return len(stack) == 0
+
+# 28
+# Write an algorithm to justify text. Given a sequence of words and an integer line length k, 
+# return a list of strings which represents each line, fully justified.
+# More specifically, you should have as many words as possible in each line. There should be at least one space between each word. 
+# Pad extra spaces when necessary so that each line has exactly length k. Spaces should be distributed as equally as possible, 
+# with the extra spaces, if any, distributed starting from the left.
+# If you can only fit one word on a line, then you should pad the right-hand side with spaces.
+# Each word is guaranteed not to be longer than k.
+# For example, given the list of words ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"] and k = 16, you should return the following:
+
+# ["the  quick brown", # 1 extra space on the left
+# "fox  jumps  over", # 2 extra spaces distributed evenly
+# "the   lazy   dog"] # 4 extra spaces distributed evenly
+# 
+def justify_text(words, k):
+    result = []
+    current_line = []
+    current_length = 0
+
+    for word in words:
+        if current_length + len(word) + len(current_line) > k:
+            spaces_needed = k - current_length
+            if len(current_line) == 1:
+                line = current_line[0] + ' ' * spaces_needed
+            else:
+                num_gaps = len(current_line) - 1
+                spaces_per_gap = spaces_needed // num_gaps
+                extra_spaces = spaces_needed % num_gaps
+                line = ''
+                for i in range(num_gaps):
+                    line += current_line[i] + ' ' * (spaces_per_gap + (1 if i < extra_spaces else 0))
+                line += current_line[-1]
+            result.append(line)
+            current_line = []
+            current_length = 0
+
+        current_line.append(word)
+        current_length += len(word)
+
+    last_line = ' '.join(current_line)
+    last_line += ' ' * (k - len(last_line))
+    result.append(last_line)
+
+    return result
+
+# Example usage:
+words = ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"]
+k = 16
+print(justify_text(words, k))
+
+# 29
+# Run-length encoding is a fast and simple method of encoding strings. 
+# The basic idea is to represent repeated successive characters as a single count and character. 
+# For example, the string "AAAABBBCCDAA" would be encoded as "4A3B2C1D2A".
+# Implement run-length encoding and decoding. You can assume the string to be encoded have no digits and 
+# consists solely of alphabetic characters. You can assume the string to be decoded is valid.
+# 
+
+def encode(s):
+    encoded = ''
+    count = 1
+
+    for i in range(len(s)):
+        # Check if the current character is the same as the next one
+        if i < len(s) - 1 and s[i] == s[i + 1]:
+            count += 1
+        else:
+            encoded += str(count) + s[i]
+            count = 1
+
+    return encoded
+
+def decode(s):
+    decoded = ''
+    count = ''
+
+    for char in s:
+        if char.isdigit():
+            count += char
+        else:
+            decoded += char * int(count)
+            count = ''
+
+    return decoded
+
+# Example usage:
+input_str = "AAAABBBCCDAA"
+encoded = encode(input_str)
+print("Encoded:", encoded)  # Output: "4A3B2C1D2A"
+decoded = decode(encoded)
+print("Decoded:", decoded)  # Output: "AAAABBBCCDAA"
