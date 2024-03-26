@@ -873,3 +873,43 @@ function editDistance(string1, string2) {
 const string1 = "kitten";
 const string2 = "sitting";
 console.log(editDistance(string1, string2)); // Output: 3
+
+/* 33
+Given a string, find the palindrome that can be made by inserting the fewest number of characters as possible anywhere in the word. 
+If there is more than one palindrome of minimum length that can be made, return the lexicographically earliest one (the first one alphabetically).
+For example, given the string "race", you should return "ecarace", since we can add three letters to it (which is the smallest amount to make a palindrome). 
+There are seven other palindromes that can be made from "race" by adding three letters, but "ecarace" comes first alphabetically.
+As another example, given the string "google", you should return "elgoogle".
+*/
+
+function longestPalindromicSubsequence(s) {
+    const n = s.length;
+    const dp = Array.from({ length: n }, () => Array(n).fill(0));
+
+    for (let i = 0; i < n; i++) {
+        dp[i][i] = 1;
+    }
+
+    for (let length = 2; length <= n; length++) {
+        for (let i = 0; i < n - length + 1; i++) {
+            const j = i + length - 1;
+            if (s[i] === s[j]) {
+                dp[i][j] = 2 + (dp[i + 1][j - 1] || 0);
+            } else {
+                dp[i][j] = Math.max(dp[i + 1][j] || 0, dp[i][j - 1] || 0);
+            }
+        }
+    }
+
+    return dp[0][n - 1];
+}
+
+function shortestPalindrome(s) {
+    const longestSubsequenceLength = longestPalindromicSubsequence(s);
+    const remainingChars = s.length - longestSubsequenceLength;
+    return [...s.split('').reverse().join('').slice(0, remainingChars), s].join('');
+}
+
+// Example usage:
+console.log(shortestPalindrome("race"));   // Output: "ecarace"
+console.log(shortestPalindrome("google")); // Output: "elgoogle"

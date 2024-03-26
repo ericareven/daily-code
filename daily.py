@@ -720,3 +720,37 @@ def edit_distance(s1, s2):
 s1 = "kitten"
 s2 = "sitting"
 print(edit_distance(s1, s2))  # Output: 3
+
+# 33
+# Given a string, find the palindrome that can be made by inserting the fewest number of characters as possible anywhere in the word. 
+# If there is more than one palindrome of minimum length that can be made, return the lexicographically earliest one (the first one alphabetically).
+# For example, given the string "race", you should return "ecarace", since we can add three letters to it (which is the smallest amount to make a palindrome). 
+# There are seven other palindromes that can be made from "race" by adding three letters, but "ecarace" comes first alphabetically.
+# As another example, given the string "google", you should return "elgoogle".
+# 
+
+def longest_palindromic_subsequence(s):
+    n = len(s)
+    dp = [[0] * n for _ in range(n)]
+
+    for i in range(n):
+        dp[i][i] = 1
+
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if s[i] == s[j]:
+                dp[i][j] = 2 + dp[i + 1][j - 1]
+            else:
+                dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])
+
+    return dp[0][n - 1]
+
+def shortest_palindrome(s):
+    longest_subsequence_length = longest_palindromic_subsequence(s)
+    remaining_chars = len(s) - longest_subsequence_length
+    return s[::-1][:remaining_chars] + s
+
+# Example usage:
+print(shortest_palindrome("race"))   # Output: "ecarace"
+print(shortest_palindrome("google")) # Output: "elgoogle"
