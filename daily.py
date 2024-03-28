@@ -721,7 +721,7 @@ s1 = "kitten"
 s2 = "sitting"
 print(edit_distance(s1, s2))  # Output: 3
 
-# 33
+# 34
 # Given a string, find the palindrome that can be made by inserting the fewest number of characters as possible anywhere in the word. 
 # If there is more than one palindrome of minimum length that can be made, return the lexicographically earliest one (the first one alphabetically).
 # For example, given the string "race", you should return "ecarace", since we can add three letters to it (which is the smallest amount to make a palindrome). 
@@ -754,3 +754,54 @@ def shortest_palindrome(s):
 # Example usage:
 print(shortest_palindrome("race"))   # Output: "ecarace"
 print(shortest_palindrome("google")) # Output: "elgoogle"
+
+
+# 35
+# Given an array of strictly the characters 'R', 'G', and 'B', segregate the values of the array so that all the Rs come first, 
+# the Gs come second, and the Bs come last. You can only swap elements of the array.
+# Do this in linear time and in-place.
+# For example, given the array ['G', 'B', 'R', 'R', 'B', 'R', 'G'], it should become ['R', 'R', 'R', 'G', 'G', 'B', 'B'].
+
+def dutch_national_flag(arr):
+    low = 0
+    mid = 0
+    high = len(arr) - 1
+
+    while mid <= high:
+        if arr[mid] == 'R':
+            arr[low], arr[mid] = arr[mid], arr[low]
+            low += 1
+            mid += 1
+        elif arr[mid] == 'G':
+            mid += 1
+        else:
+            arr[mid], arr[high] = arr[high], arr[mid]
+            high -= 1
+
+# Example usage:
+arr = ['G', 'B', 'R', 'R', 'B', 'R', 'G']
+dutch_national_flag(arr)
+print(arr)  # Output: ['R', 'R', 'R', 'G', 'G', 'B', 'B']
+
+
+# 37
+# The power set of a set is the set of all its subsets. Write a function that, given a set, generates its power set.
+# For example, given the set {1, 2, 3}, it should return {{}, {1}, {2}, {3}, {1, 2}, {1, 3}, {2, 3}, {1, 2, 3}}.
+# You may also use a list or array to represent a set.
+# 
+
+def generate_power_set(nums):
+    def backtrack(start, path):
+        power_set.append(path)
+        for i in range(start, len(nums)):
+            backtrack(i + 1, path + [nums[i]])
+
+    power_set = []
+    backtrack(0, [])
+    return power_set
+
+# Example usage:
+set = [1, 2, 3]
+print(generate_power_set(set))
+
+

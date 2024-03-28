@@ -874,7 +874,7 @@ const string1 = "kitten";
 const string2 = "sitting";
 console.log(editDistance(string1, string2)); // Output: 3
 
-/* 33
+/* 34
 Given a string, find the palindrome that can be made by inserting the fewest number of characters as possible anywhere in the word. 
 If there is more than one palindrome of minimum length that can be made, return the lexicographically earliest one (the first one alphabetically).
 For example, given the string "race", you should return "ecarace", since we can add three letters to it (which is the smallest amount to make a palindrome). 
@@ -913,3 +913,73 @@ function shortestPalindrome(s) {
 // Example usage:
 console.log(shortestPalindrome("race"));   // Output: "ecarace"
 console.log(shortestPalindrome("google")); // Output: "elgoogle"
+
+/* 35
+Given an array of strictly the characters 'R', 'G', and 'B', segregate the values of the array so that all the Rs come first, 
+the Gs come second, and the Bs come last. You can only swap elements of the array.
+Do this in linear time and in-place.
+For example, given the array ['G', 'B', 'R', 'R', 'B', 'R', 'G'], it should become ['R', 'R', 'R', 'G', 'G', 'B', 'B'].
+*/
+/*
+THE DUTCH NATIONAL FLAG ALGORITHM, also known as 3-way partitioning, is an algorithm designed to sort an array containing three distinct values into three partitions according to a specified order.
+The basic idea of the algorithm is to partition the array into three sections: one for elements smaller than a given value (e.g., 'R'), 
+                                                                               one for elements equal to that value (e.g., 'G'), 
+                                                                               and one for elements larger than that value (e.g., 'B'). 
+This is achieved by maintaining three pointers:
+A pointer low pointing to the boundary between the 'R' and 'G' sections.
+A pointer mid pointing to the current element being processed.
+A pointer high pointing to the boundary between the 'G' and 'B' sections.
+
+The Dutch National Flag algorithm is efficient because it only requires a single pass through the array, 
+making it a linear-time algorithm (O(n)) with respect to the size of the array.
+Additionally, it is an in-place algorithm, meaning it does not require additional memory beyond the input array. 
+This makes it particularly useful for sorting arrays with a small number of distinct values.
+*/
+
+function dutchNationalFlag(arr) {
+    let low = 0;
+    let mid = 0;
+    let high = arr.length - 1;
+
+    while (mid <= high) {
+        if (arr[mid] === 'R') {
+            [arr[low], arr[mid]] = [arr[mid], arr[low]];
+            low++;
+            mid++;
+        } else if (arr[mid] === 'G') {
+            mid++;
+        } else {
+            [arr[mid], arr[high]] = [arr[high], arr[mid]];
+            high--;
+        }
+    }
+}
+
+// Example usage:
+const arr = ['G', 'B', 'R', 'R', 'B', 'R', 'G'];
+dutchNationalFlag(arr);
+console.log(arr); // Output: ['R', 'R', 'R', 'G', 'G', 'B', 'B']
+
+/* 37
+The power set of a set is the set of all its subsets. Write a function that, given a set, generates its power set.
+For example, given the set {1, 2, 3}, it should return {{}, {1}, {2}, {3}, {1, 2}, {1, 3}, {2, 3}, {1, 2, 3}}.
+You may also use a list or array to represent a set.
+*/
+
+function generatePowerSet(nums) {
+    const powerSet = [[]];
+
+    for (const num of nums) {
+        const subsetsWithNum = [];
+        for (const subset of powerSet) {
+            subsetsWithNum.push([...subset, num]);
+        }
+        powerSet.push(...subsetsWithNum);
+    }
+
+    return powerSet;
+}
+
+// Example usage:
+const set = [1, 2, 3];
+console.log(generatePowerSet(set));
