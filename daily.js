@@ -983,3 +983,60 @@ function generatePowerSet(nums) {
 // Example usage:
 const set = [1, 2, 3];
 console.log(generatePowerSet(set));
+
+/* 41
+Given an unordered list of flights taken by someone, each represented as (origin, destination) pairs, and a starting airport, 
+compute the person's itinerary. If no such itinerary exists, return null. If there are multiple possible itineraries, 
+return the lexicographically smallest one. All flights must be used in the itinerary.
+For example, given the list of flights [('SFO', 'HKO'), ('YYZ', 'SFO'), ('YUL', 'YYZ'), ('HKO', 'ORD')] and starting airport 'YUL', 
+you should return the list ['YUL', 'YYZ', 'SFO', 'HKO', 'ORD'].
+Given the list of flights [('SFO', 'COM'), ('COM', 'YYZ')] and starting airport 'COM', you should return null.
+Given the list of flights [('A', 'B'), ('A', 'C'), ('B', 'C'), ('C', 'A')] and starting airport 'A', you should return the list ['A', 'B', 'C', 'A', 'C']
+even though ['A', 'C', 'A', 'B', 'C'] is also a valid itinerary. However, the first one is lexicographically smaller.
+*/
+/* DFS FUNCTION
+DFS stands for Depth-First Search. It's an algorithm used for traversing or searching tree or graph data structures.
+DFS explores as far as possible along each branch before backtracking. It starts at a selected node (often referred to as the "root" node) 
+and explores as far as possible along each branch before backtracking.
+*/
+
+function findItinerary(flights, start) {
+    const graph = {};
+    for (const [src, dst] of flights) {
+        if (!(src in graph)) {
+            graph[src] = [];
+        }
+        graph[src].push(dst);
+    }
+
+    for (const src in graph) {
+        graph[src].sort((a, b) => b.localeCompare(a)); // Sort destinations lexicographically in reverse order
+    }
+
+    const itinerary = [];
+
+    function dfs(node) {
+        while (graph[node] && graph[node].length > 0) {
+            const nextNode = graph[node].pop();
+            dfs(nextNode);
+        }
+        itinerary.push(node);
+    }
+
+    dfs(start);
+
+    return itinerary.length === flights.length + 1 ? itinerary.reverse() : null;
+}
+
+// Example usage:
+const flights1 = [['SFO', 'HKO'], ['YYZ', 'SFO'], ['YUL', 'YYZ'], ['HKO', 'ORD']];
+const start1 = 'YUL';
+console.log(findItinerary(flights1, start1)); // Output: ['YUL', 'YYZ', 'SFO', 'HKO', 'ORD']
+
+const flights2 = [['SFO', 'COM'], ['COM', 'YYZ']];
+const start2 = 'COM';
+console.log(findItinerary(flights2, start2)); // Output: null
+
+const flights3 = [['A', 'B'], ['A', 'C'], ['B', 'C'], ['C', 'A']];
+const start3 = 'A';
+console.log(findItinerary(flights3, start3)); // Output: ['A', 'B', 'C', 'A', 'C']
