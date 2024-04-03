@@ -1040,3 +1040,61 @@ console.log(findItinerary(flights2, start2)); // Output: null
 const flights3 = [['A', 'B'], ['A', 'C'], ['B', 'C'], ['C', 'A']];
 const start3 = 'A';
 console.log(findItinerary(flights3, start3)); // Output: ['A', 'B', 'C', 'A', 'C']
+
+/* 43
+Implement a stack that has the following methods:
+push(val), which pushes an element onto the stack
+pop(), which pops off and returns the topmost element of the stack. If there are no elements in the stack, then it should throw an error or return null.
+max(), which returns the maximum value in the stack currently. If there are no elements in the stack, then it should throw an error or return null.
+Each method should run in constant time.
+*/
+
+class Node {
+    constructor(val, maxSoFar) {
+        this.val = val;
+        this.maxSoFar = maxSoFar;
+        this.prev = null;
+    }
+}
+
+class MaxStack {
+    constructor() {
+        this.top = null;
+    }
+
+    push(val) {
+        if (!this.top) {
+            this.top = new Node(val, val);
+        } else {
+            const maxSoFar = Math.max(val, this.top.maxSoFar);
+            const newNode = new Node(val, maxSoFar);
+            newNode.prev = this.top;
+            this.top = newNode;
+        }
+    }
+
+    pop() {
+        if (!this.top) {
+            throw new Error("Stack is empty");
+        }
+        const val = this.top.val;
+        this.top = this.top.prev;
+        return val;
+    }
+
+    max() {
+        if (!this.top) {
+            throw new Error("Stack is empty");
+        }
+        return this.top.maxSoFar;
+    }
+}
+
+// Example usage:
+const stack = new MaxStack();
+stack.push(5);
+stack.push(3);
+stack.push(7);
+console.log(stack.max()); // Output: 7
+console.log(stack.pop()); // Output: 7
+console.log(stack.max()); // Output: 5

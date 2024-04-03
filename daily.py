@@ -851,3 +851,51 @@ print(find_itinerary(flights2, start2))  # Output: None
 flights3 = [('A', 'B'), ('A', 'C'), ('B', 'C'), ('C', 'A')]
 start3 = 'A'
 print(find_itinerary(flights3, start3))  # Output: ['A', 'B', 'C', 'A', 'C']
+
+# 43
+# Implement a stack that has the following methods:
+# push(val), which pushes an element onto the stack
+# pop(), which pops off and returns the topmost element of the stack. If there are no elements in the stack, then it should throw an error or return null.
+# max(), which returns the maximum value in the stack currently. If there are no elements in the stack, then it should throw an error or return null.
+# Each method should run in constant time.
+#
+
+class Node:
+    def __init__(self, val, max_so_far):
+        self.val = val
+        self.max_so_far = max_so_far
+        self.prev = None
+
+class MaxStack:
+    def __init__(self):
+        self.top = None
+
+    def push(self, val):
+        if not self.top:
+            self.top = Node(val, val)
+        else:
+            max_so_far = max(val, self.top.max_so_far)
+            new_node = Node(val, max_so_far)
+            new_node.prev = self.top
+            self.top = new_node
+
+    def pop(self):
+        if not self.top:
+            return None
+        val = self.top.val
+        self.top = self.top.prev
+        return val
+
+    def max(self):
+        if not self.top:
+            return None
+        return self.top.max_so_far
+
+# Example usage:
+stack = MaxStack()
+stack.push(5)
+stack.push(3)
+stack.push(7)
+print(stack.max())  # Output: 7
+print(stack.pop())  # Output: 7
+print(stack.max())  # Output: 5
