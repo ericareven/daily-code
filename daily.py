@@ -905,6 +905,26 @@ print(stack.max())  # Output: 5
 # implement a function rand7() that returns an integer from 1 to 7 (inclusive).
 # 
 
+import random
+
+def rand5():
+    # Simulating rand5() function, generating a random integer between 1 and 5 (inclusive)
+    return random.randint(1, 5)
+
+def rand7():
+    result = 21  # Initialize result to a number larger than 7
+
+    while result > 20:
+        # Generating a number between 1 and 25 using rand5()
+        result = (rand5() - 1) * 5 + rand5()
+
+    # Mapping the range 1-25 to the range 1-7
+    return (result % 7) + 1
+
+# Example usage:
+print(rand7())
+
+
 # 47
 # Given a array of numbers representing the stock prices of a company in chronological order, 
 # write a function that calculates the maximum profit you could have made from buying and selling that stock once. You must buy before you can sell it.
