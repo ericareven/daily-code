@@ -1098,3 +1098,56 @@ stack.push(7);
 console.log(stack.max()); // Output: 7
 console.log(stack.pop()); // Output: 7
 console.log(stack.max()); // Output: 5
+
+/* 45
+Using a function rand5() that returns an integer from 1 to 5 (inclusive) with uniform probability, 
+implement a function rand7() that returns an integer from 1 to 7 (inclusive).
+*/
+
+/* 47
+Given a array of numbers representing the stock prices of a company in chronological order, 
+write a function that calculates the maximum profit you could have made from buying and selling that stock once. You must buy before you can sell it.
+For example, given [9, 11, 8, 5, 7, 10], you should return 5, since you could buy the stock at 5 dollars and sell it at 10 dollars.
+*/
+
+/* 48
+Given pre-order and in-order traversals of a binary tree, write a function to reconstruct the tree.
+For example, given the following preorder traversal:
+[a, b, d, e, c, f, g]
+And the following inorder traversal:
+[d, b, e, a, f, c, g]
+You should return the following tree:
+
+    a
+   / \
+  b   c
+ / \ / \
+d  e f  g
+*/
+
+/* 49
+Given an array of numbers, find the maximum sum of any contiguous subarray of the array.
+For example, given the array [34, -50, 42, 14, -5, 86], the maximum sum would be 137, 
+since we would take elements 42, 14, -5, and 86.
+Given the array [-5, -1, -8, -9], the maximum sum would be 0, since we would not take any elements.
+Do this in O(N) time.
+*/
+
+function maxSubarraySum(arr) {
+    let maxEndingHere = 0;
+    let maxSoFar = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+        maxEndingHere = Math.max(0, maxEndingHere + arr[i]);
+        maxSoFar = Math.max(maxSoFar, maxEndingHere);
+    }
+
+    return maxSoFar;
+}
+
+// Example usage:
+const array1 = [34, -50, 42, 14, -5, 86];
+const array2 = [-5, -1, -8, -9];
+
+console.log(maxSubarraySum(array1)); // Output: 137
+console.log(maxSubarraySum(array2)); // Output: 0
