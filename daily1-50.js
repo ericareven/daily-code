@@ -1192,3 +1192,76 @@ const array2 = [-5, -1, -8, -9];
 
 console.log(maxSubarraySum(array1)); // Output: 137
 console.log(maxSubarraySum(array2)); // Output: 0
+
+/* 50
+Suppose an arithmetic expression is given as a binary tree. 
+Each leaf is an integer and each internal node is one of '+', '−', '∗', or '/'.
+Given the root to such a tree, write a function to evaluate it.
+For example, given the following tree:
+
+    *
+   / \
+  +    +
+ / \  / \
+3  2  4  5
+You should return 45, as it is (3 + 2) * (4 + 5).
+*/
+
+class TreeNode {
+    constructor(val) {
+        this.val = val;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+function evaluateExpressionTree(root) {
+    if (!root) {
+        return 0;
+    }
+
+    if (!root.left && !root.right) {
+        return parseInt(root.val);
+    }
+
+    const leftValue = evaluateExpressionTree(root.left);
+    const rightValue = evaluateExpressionTree(root.right);
+
+    switch (root.val) {
+        case '+':
+            return leftValue + rightValue;
+        case '-':
+            return leftValue - rightValue;
+        case '*':
+            return leftValue * rightValue;
+        case '/':
+            return leftValue / rightValue;
+        default:
+            throw new Error('Invalid operator');
+    }
+}
+
+function createExpressionTree(expression) {
+    const tokens = expression.split(' ');
+
+    const stack = [];
+    for (const token of tokens) {
+        if (isNaN(token)) {
+            const right = stack.pop();
+            const left = stack.pop();
+            const node = new TreeNode(token);
+            node.left = left;
+            node.right = right;
+            stack.push(node);
+        } else {
+            stack.push(new TreeNode(token));
+        }
+    }
+
+    return stack.pop();
+}
+
+// Example usage:
+const expression = '* + 3 2 + 4 5';
+const root = createExpressionTree(expression);
+console.log(evaluateExpressionTree(root)); // Output: 45

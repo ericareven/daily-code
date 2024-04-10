@@ -988,3 +988,66 @@ array2 = [-5, -1, -8, -9]
 
 print(max_subarray_sum(array1))  # Output: 137
 print(max_subarray_sum(array2))  # Output: 0
+
+# 50
+# Suppose an arithmetic expression is given as a binary tree. 
+# Each leaf is an integer and each internal node is one of '+', '−', '∗', or '/'.
+# Given the root to such a tree, write a function to evaluate it.
+# For example, given the following tree:
+
+#     *
+#    / \
+#   +    +
+#  / \  / \
+# 3  2  4  5
+# You should return 45, as it is (3 + 2) * (4 + 5).
+#
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def evaluate_expression_tree(root):
+    if not root:
+        return 0
+
+    if not root.left and not root.right:
+        return int(root.val)
+
+    left_value = evaluate_expression_tree(root.left)
+    right_value = evaluate_expression_tree(root.right)
+
+    if root.val == '+':
+        return left_value + right_value
+    elif root.val == '-':
+        return left_value - right_value
+    elif root.val == '*':
+        return left_value * right_value
+    elif root.val == '/':
+        return left_value / right_value
+    else:
+        raise ValueError('Invalid operator')
+
+def create_expression_tree(expression):
+    tokens = expression.split(' ')
+
+    stack = []
+    for token in tokens:
+        if not token.isdigit():
+            right = stack.pop()
+            left = stack.pop()
+            node = TreeNode(token)
+            node.left = left
+            node.right = right
+            stack.append(node)
+        else:
+            stack.append(TreeNode(token))
+
+    return stack.pop()
+
+# Example usage:
+expression = '* + 3 2 + 4 5'
+root = create_expression_tree(expression)
+print(evaluate_expression_tree(root))  # Output: 45
