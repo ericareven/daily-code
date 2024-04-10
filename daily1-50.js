@@ -1166,6 +1166,51 @@ You should return the following tree:
 d  e f  g
 */
 
+class TreeNode {
+    constructor(val) {
+        this.val = val;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+function buildTree(preorder, inorder) {
+    if (preorder.length === 0 || inorder.length === 0) {
+        return null;
+    }
+
+    const rootVal = preorder[0];
+    const root = new TreeNode(rootVal);
+
+    const rootIndexInorder = inorder.indexOf(rootVal);
+    const leftInorder = inorder.slice(0, rootIndexInorder);
+    const rightInorder = inorder.slice(rootIndexInorder + 1);
+
+    const leftPreorder = preorder.slice(1, leftInorder.length + 1);
+    const rightPreorder = preorder.slice(leftInorder.length + 1);
+
+    root.left = buildTree(leftPreorder, leftInorder);
+    root.right = buildTree(rightPreorder, rightInorder);
+
+    return root;
+}
+
+function printTreeInorder(root) {
+    if (root) {
+        printTreeInorder(root.left);
+        process.stdout.write(root.val + " ");
+        printTreeInorder(root.right);
+    }
+}
+
+// Example usage:
+const preorder = ['a', 'b', 'd', 'e', 'c', 'f', 'g'];
+const inorder = ['d', 'b', 'e', 'a', 'f', 'c', 'g'];
+
+const root = buildTree(preorder, inorder);
+printTreeInorder(root);
+
+
 /* 49
 Given an array of numbers, find the maximum sum of any contiguous subarray of the array.
 For example, given the array [34, -50, 42, 14, -5, 86], the maximum sum would be 137, 

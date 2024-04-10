@@ -964,6 +964,42 @@ print(max_profit(stock_prices))  # Output: 5
 # d  e f  g
 # 
 
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def build_tree(preorder, inorder):
+    if not preorder or not inorder:
+        return None
+    
+    root_val = preorder[0]
+    root = TreeNode(root_val)
+    
+    # Find the index of root_val in inorder
+    root_index = inorder.index(root_val)
+    
+    # Recursively build left and right subtrees
+    root.left = build_tree(preorder[1:root_index + 1], inorder[:root_index])
+    root.right = build_tree(preorder[root_index + 1:], inorder[root_index + 1:])
+    
+    return root
+
+def print_tree_inorder(root):
+    if root:
+        print_tree_inorder(root.left)
+        print(root.val, end=" ")
+        print_tree_inorder(root.right)
+
+# Example usage:
+preorder = ['a', 'b', 'd', 'e', 'c', 'f', 'g']
+inorder = ['d', 'b', 'e', 'a', 'f', 'c', 'g']
+
+root = build_tree(preorder, inorder)
+print_tree_inorder(root)
+
+
 # 49
 # Given an array of numbers, find the maximum sum of any contiguous subarray of the array.
 # For example, given the array [34, -50, 42, 14, -5, 86], the maximum sum would be 137, 
