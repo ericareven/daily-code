@@ -1130,6 +1130,27 @@ write a function that calculates the maximum profit you could have made from buy
 For example, given [9, 11, 8, 5, 7, 10], you should return 5, since you could buy the stock at 5 dollars and sell it at 10 dollars.
 */
 
+function maxProfit(prices) {
+    if (prices.length < 2) {
+        return 0; // If there are fewer than 2 prices, no profit can be made
+    }
+
+    let minPrice = prices[0];
+    let maxProfit = 0;
+
+    for (let i = 1; i < prices.length; i++) {
+        maxProfit = Math.max(maxProfit, prices[i] - minPrice);
+        minPrice = Math.min(minPrice, prices[i]);
+    }
+
+    return maxProfit;
+}
+
+// Example usage:
+const stockPrices = [9, 11, 8, 5, 7, 10];
+console.log(maxProfit(stockPrices)); // Output: 5
+
+
 /* 48
 Given pre-order and in-order traversals of a binary tree, write a function to reconstruct the tree.
 For example, given the following preorder traversal:
