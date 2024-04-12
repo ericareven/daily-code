@@ -22,3 +22,47 @@ function shuffleDeck(deck) {
 const deck = Array.from({ length: 52 }, (_, i) => i + 1); // Representing the deck of cards as an array of numbers from 1 to 52
 const shuffledDeck = shuffleDeck(deck);
 console.log(shuffledDeck);
+
+
+/* 53
+Implement a queue using two stacks. Recall that a queue is a FIFO (first-in, first-out) data structure with the following methods: 
+enqueue, which inserts an element into the queue, and dequeue, which removes it.
+*/
+
+class QueueUsingStacks {
+    constructor() {
+        this.inStack = [];  // Stack for enqueue operation
+        this.outStack = [];  // Stack for dequeue operation
+    }
+
+    enqueue(value) {
+        this.inStack.push(value);
+    }
+
+    dequeue() {
+        if (this.outStack.length === 0) {
+            // If the outStack is empty, transfer elements from inStack to outStack
+            while (this.inStack.length > 0) {
+                this.outStack.push(this.inStack.pop());
+            }
+        }
+        if (this.outStack.length > 0) {
+            // Pop and return the top element from outStack (FIFO)
+            return this.outStack.pop();
+        } else {
+            // If both stacks are empty, return an error message
+            return "Error: Dequeue from empty queue";
+        }
+    }
+}
+
+// Example usage:
+const queue = new QueueUsingStacks();
+queue.enqueue(1);
+queue.enqueue(2);
+queue.enqueue(3);
+
+console.log(queue.dequeue());  // Output: 1
+console.log(queue.dequeue());  // Output: 2
+console.log(queue.dequeue());  // Output: 3
+console.log(queue.dequeue());  // Output: Error: Dequeue from empty queue
