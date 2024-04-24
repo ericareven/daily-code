@@ -66,3 +66,58 @@ console.log(queue.dequeue());  // Output: 1
 console.log(queue.dequeue());  // Output: 2
 console.log(queue.dequeue());  // Output: 3
 console.log(queue.dequeue());  // Output: Error: Dequeue from empty queue
+
+/* 55
+Implement a URL shortener with the following methods:
+shorten(url), which shortens the url into a six-character alphanumeric string, such as zLg6wl.
+restore(short), which expands the shortened string into the original url. If no such shortened string exists, return null.
+Hint: What if we enter the same URL twice?
+*/
+
+class URLShortener {
+    constructor() {
+        this.urlToShort = {};
+        this.shortToUrl = {};
+    }
+
+    shorten(url) {
+        if (this.urlToShort[url]) {
+            return this.urlToShort[url];
+        }
+
+        const short = this.generateShort();
+        this.urlToShort[url] = short;
+        this.shortToUrl[short] = url;
+        return short;
+    }
+
+    restore(short) {
+        return this.shortToUrl[short] || null;
+    }
+
+    generateShort() {
+        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let short = '';
+        for (let i = 0; i < 6; i++) {
+            short += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return short;
+    }
+}
+
+// Example usage:
+const shortener = new URLShortener();
+const url1 = "https://www.example.com";
+const short1 = shortener.shorten(url1);
+console.log("Shortened URL:", short1);
+
+const url2 = "https://www.example.com";
+const short2 = shortener.shorten(url2);
+console.log("Shortened URL for the same URL:", short2); // Should print the same short URL
+
+const restoredUrl = shortener.restore(short1);
+console.log("Restored URL:", restoredUrl);
+
+const invalidShort = "abc123";
+const restoredInvalidUrl = shortener.restore(invalidShort);
+console.log("Restored invalid URL:", restoredInvalidUrl); // Should print null

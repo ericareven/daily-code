@@ -56,3 +56,51 @@ queue.enqueue(3)
 print(queue.dequeue())  # Output: 1
 print(queue.dequeue())  # Output: 2
 print(queue.dequeue())  # Output: 3
+
+# 55
+# Implement a URL shortener with the following methods:
+# shorten(url), which shortens the url into a six-character alphanumeric string, such as zLg6wl.
+# restore(short), which expands the shortened string into the original url. If no such shortened string exists, return null.
+# Hint: What if we enter the same URL twice?
+#
+
+import random
+import string
+
+class URLShortener:
+    def __init__(self):
+        self.url_to_short = {}
+        self.short_to_url = {}
+
+    def shorten(self, url):
+        if url in self.url_to_short:
+            return self.url_to_short[url]
+
+        short = self.generate_short()
+        self.url_to_short[url] = short
+        self.short_to_url[short] = url
+        return short
+
+    def restore(self, short):
+        return self.short_to_url.get(short, None)
+
+    def generate_short(self):
+        chars = string.ascii_letters + string.digits
+        return ''.join(random.choice(chars) for _ in range(6))
+
+# Example usage:
+shortener = URLShortener()
+url1 = "https://www.example.com"
+short1 = shortener.shorten(url1)
+print("Shortened URL:", short1)
+
+url2 = "https://www.example.com"
+short2 = shortener.shorten(url2)
+print("Shortened URL for the same URL:", short2)  # Should print the same short URL
+
+restored_url = shortener.restore(short1)
+print("Restored URL:", restored_url)
+
+invalid_short = "abc123"
+restored_invalid_url = shortener.restore(invalid_short)
+print("Restored invalid URL:", restored_invalid_url)  # Should print None
