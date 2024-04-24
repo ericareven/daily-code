@@ -149,6 +149,34 @@ print(break_text_into_lines(s, k))
 # You can assume all the integers in the array are unique.
 #
 
+def find_element_index(arr, target):
+    left, right = 0, len(arr) - 1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        
+        if arr[mid] == target:
+            return mid
+        
+        # If the left half is sorted
+        if arr[left] <= arr[mid]:
+            if arr[left] <= target < arr[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        # If the right half is sorted
+        else:
+            if arr[mid] < target <= arr[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+                
+    return None
+
+# Example usage:
+arr = [13, 18, 25, 2, 8, 10]
+target = 8
+print(find_element_index(arr, target))  # Output: 4
 
 
 # 60

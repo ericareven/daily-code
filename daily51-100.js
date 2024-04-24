@@ -173,6 +173,44 @@ For example, given the array [13, 18, 25, 2, 8, 10] and the element 8, return 4 
 You can assume all the integers in the array are unique.
 */
 
+function findElementIndex(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+
+        if (arr[mid] === target) {
+            return mid;
+        }
+
+        // If the left half is sorted
+        if (arr[left] <= arr[mid]) {
+            // Check if the target is in the left half
+            if (arr[left] <= target && target < arr[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        // If the right half is sorted
+        else {
+            // Check if the target is in the right half
+            if (arr[mid] < target && target <= arr[right]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+
+    return null;
+}
+
+// Example usage:
+const arr = [13, 18, 25, 2, 8, 10];
+const target = 8;
+console.log(findElementIndex(arr, target)); // Output: 4
 
 
 /* 60
