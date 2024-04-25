@@ -212,22 +212,39 @@ const arr = [13, 18, 25, 2, 8, 10];
 const target = 8;
 console.log(findElementIndex(arr, target)); // Output: 4
 
-
-/* 60
-Given a multiset of integers, return whether it can be partitioned into two subsets whose sums are the same.
-For example, given the multiset {15, 5, 20, 10, 35, 15, 10}, it would return true, since we can split it up into 
-{15, 5, 10, 15, 10} and {20, 35}, which both add up to 55.
-Given the multiset {15, 5, 20, 10, 35}, it would return false, since we can't split it up into two subsets that add up to the same sum.
-*/
-
-
-
 /* 61
 Implement integer exponentiation. That is, implement the pow(x, y) function, where x and y are integers and returns x^y.
 Do this faster than the naive method of repeated multiplication.
 For example, pow(2, 10) should return 1024.
 */
 
+function pow(x, y) {
+    if (y === 0) {
+        return 1;
+    } else if (y === 1) {
+        return x;
+    }
+
+    let result = 1;
+    let base = x;
+
+    while (y > 0) {
+        // If y is odd, multiply result by base
+        if (y % 2 === 1) {
+            result *= base;
+        }
+        // Square the base
+        base *= base;
+        // Divide y by 2
+        y = Math.floor(y / 2);
+    }
+
+    return result;
+}
+
+// Example usage:
+console.log(pow(2, 10)); // Output: 1024
+console.log(pow(3, 5));  // Output: 243
 
 
 /* 62
@@ -251,4 +268,15 @@ For example, given the following matrix:
  ['M', 'A', 'S', 'S']]
 and the target word 'FOAM', you should return true, since it's the leftmost column. 
 Similarly, given the target word 'MASS', you should return true, since it's the last row.
+*/
+
+/* 65
+Given a N by M matrix of numbers, print out the matrix in a clockwise spiral.
+For example, given the following matrix:
+[[1,  2,  3,  4,  5],
+ [6,  7,  8,  9,  10],
+ [11, 12, 13, 14, 15],
+ [16, 17, 18, 19, 20]]
+You should print out the following:
+1 2 3 4 5 10 15 20 19 18 17 16 11 6 7 8 9 14 13 12
 */
